@@ -9,9 +9,15 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Footer</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <footer style="background-color: #f0f0f0; padding: 10px; border-top: 1px solid #ccc; text-align: center; margin-top: 20px;">
+
+            <p><strong>MP4: The Mouse Cinema</strong></p>
+
+            <%-- scriptlet 1 --%>
+            <p>Current Time: <%= application.getAttribute("date") %></p>
+        </footer>
     </body>
 </html>

@@ -9,9 +9,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Error 500: Server Error</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Error 500: Internal Server Error</h1>
+        <p>Something went wrong on our end. We are looking into it! :)</p>
     </body>
 </html>

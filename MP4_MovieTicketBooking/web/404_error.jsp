@@ -9,9 +9,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Error 404: Not Found</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Error 404: Page Not Found</h1>
+        <p>Sorry, the resource you are looking for does not exist :(</p>
     </body>
 </html>
