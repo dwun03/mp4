@@ -5,7 +5,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
@@ -17,12 +16,10 @@ public class SignupServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-        
         if(session !=null && session.getAttribute("user")!=null){
             response.sendRedirect("home");
             return;
         }
-        
         request.getRequestDispatcher("/WEB-INF/signup.jsp").forward(request, response);
     }
 
@@ -30,33 +27,31 @@ public class SignupServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // A. Get parameters (Payment removed)
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String name = request.getParameter("name");
         String age = request.getParameter("age");
         String contact = request.getParameter("contact");
         String address = request.getParameter("address");
+        
+        // RUBRIC FIX: Default role is "Customer"
+        String role = "Customer";
 
-        // B. Format data string (Payment removed from end)
+        // Write 7 items to the file
         String userRecord = username + "," + password + "," + name + "," + 
-                            age + "," + contact + "," + address;
+                            age + "," + contact + "," + address + "," + role;
 
-        // C. Save to users.txt
         String txtFilePath = getServletContext().getRealPath("/WEB-INF/users.txt");
-
         if (txtFilePath != null) {
             try (FileWriter fw = new FileWriter(txtFilePath, true);
                  BufferedWriter bw = new BufferedWriter(fw);
                  PrintWriter out = new PrintWriter(bw)) {
                 
                 out.println(userRecord);
-                
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-
         response.sendRedirect("login");
     }
 }

@@ -16,8 +16,19 @@
 
             <p><strong>MP4: The Mouse Cinema</strong></p>
 
-            <%-- scriptlet 1 --%>
+            <%-- Scriptlet 1 (Expression) --%>
             <p>Current Time: <%= application.getAttribute("date") %></p>
+
+            <%-- Scriptlet3 (Declaration) --%>
+            <%! 
+                public String getCopyrightYear() {
+                    return "2025";
+                }
+            %>
+            <p style="font-size: 11px; margin-top: 5px; color: #555;">
+                &copy; <%= getCopyrightYear() %> The Mouse Cinema. All Rights Reserved.
+            </p>
+
         </footer>
     </body>
 </html>

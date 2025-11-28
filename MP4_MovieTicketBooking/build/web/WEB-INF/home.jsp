@@ -131,7 +131,9 @@
 
     
     <footer class="footer">
-        </footer>
+        <%--Dynamic footer--%>
+        <jsp:include page="/footer.jsp" />
+    </footer>
 
     
     <button class="shopping-cart-btn">

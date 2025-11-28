@@ -16,23 +16,30 @@ public class ContextListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext context = sce.getServletContext();
-        time = new Thread(() -> {
-                while(running){
-                    Date current=new Date();
-                    context.setAttribute("date",current.toString());
-                    try {
-                        Thread.sleep(1000); // update every second
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                    }
-                }
-        });
         
-        context.setAttribute("header","ICS2608 / 2CSC / BUENAFE, Anton - ILANO, Dwayne Anthony - PANGAN, Marc Stephen");
-        context.setAttribute("footer","MP3");
-}
+        context.setAttribute("header", "ICS2608 / 2CSC / BUENAFE, Anton - ILANO, Dwayne Anthony - PANGAN, Marc Stephen");
+        
+        time = new Thread(() -> {
+            while(running){
+                Date current = new Date();
+                context.setAttribute("date", current.toString());
+                
+                try {
+                    Thread.sleep(1000); 
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        });
+        time.start();
+    }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
+        // Stop the thread safely when server shuts down
+        running = false;
+        if (time != null) {
+            time.interrupt();
+        }
     }
 }

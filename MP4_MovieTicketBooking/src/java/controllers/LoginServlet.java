@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +16,6 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {  
         HttpSession session = request.getSession(false);
-        
         if(session != null){
             session.invalidate();
         }
@@ -28,7 +26,7 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String inputUsername = request.getParameter("username"); 
+        String inputUsername = request.getParameter("username");
         String inputPassword = request.getParameter("password");
         
         String txtFilePath = getServletContext().getRealPath("/WEB-INF/users.txt");
@@ -40,18 +38,21 @@ public class LoginServlet extends HttpServlet {
                 while ((line = reader.readLine()) != null) {
                     String[] parts = line.split(",");
                     
-                    // We now check for 6 parts because we added Age, Contact, and Address
-                    if (parts.length >= 6) {
+                    // RUBRIC FIX: Check for 7 parts (including Role)
+                    if (parts.length >= 7) {
                         String fileUsername = parts[0].trim();
                         String filePassword = parts[1].trim();
-                        String fileName = parts[2].trim();
-                        String fileAge = parts[3].trim();
-                        String fileContact = parts[4].trim();
-                        String fileAddress = parts[5].trim();
-
+                        
                         if (fileUsername.equals(inputUsername) && filePassword.equals(inputPassword)) {
-                            // Create the User object with ALL the new info
-                            foundUser = new User(fileUsername, filePassword, fileName, fileAge, fileContact, fileAddress);
+                            // Extract all data
+                            String fileName = parts[2].trim();
+                            String fileAge = parts[3].trim();
+                            String fileContact = parts[4].trim();
+                            String fileAddress = parts[5].trim();
+                            String fileRole = parts[6].trim();
+
+                            // Create the User object
+                            foundUser = new User(fileUsername, filePassword, fileName, fileAge, fileContact, fileAddress, fileRole);
                             break;
                         }
                     }
@@ -64,7 +65,14 @@ public class LoginServlet extends HttpServlet {
         if (foundUser != null) {
             HttpSession session = request.getSession(true);
             session.setAttribute("user", foundUser);
-            response.sendRedirect("home");
+            
+            // RUBRIC: Two Types of Users
+            if ("Staff".equalsIgnoreCase(foundUser.getRole())) {
+                response.sendRedirect("EmployeeDashboard.jsp");
+            } else {
+                response.sendRedirect("home");
+            }
+            
         } else {
             request.setAttribute("errorMessage", "Invalid username or password.");
             request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
